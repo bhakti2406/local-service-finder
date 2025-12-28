@@ -3,7 +3,6 @@ import cors from "cors";
 import "dotenv/config";
 import http from "http";
 import { Server } from "socket.io";
-
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import bookingRoutes from "./routes/bookingRoutes.js";
@@ -13,32 +12,16 @@ import userRoutes from "./routes/userRoutes.js";
 import serviceRoutes from "./routes/serviceRoutes.js";
 
 const app = express();
-const PORT = process.env.PORT || 10000;
+const PORT = process.env.PORT || 5000;
 
-/* =========================
-   CONNECT DB
-========================= */
 connectDB();
 
-/* =========================
-   MIDDLEWARE
-========================= */
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true,
+}));
 app.use(express.json());
 
-/* 🔥 FIXED CORS (VERY IMPORTANT) */
-app.use(
-  cors({
-    origin: [
-      "http://localhost:3000",
-      "https://local-service-finder-2-22h0.onrender.com", // frontend
-    ],
-    credentials: true,
-  })
-);
-
-/* =========================
-   ROUTES
-========================= */
 app.use("/api/auth", authRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/chats", chatRoutes);
@@ -46,19 +29,11 @@ app.use("/api/reviews", reviewRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/services", serviceRoutes);
 
-/* =========================
-   SERVER + SOCKET.IO
-========================= */
 const server = http.createServer(app);
-
 const io = new Server(server, {
   cors: {
-    origin: [
-      "http://localhost:3000",
-      "https://local-service-finder-2-22h0.onrender.com",
-    ],
+    origin: "http://localhost:3000",
     methods: ["GET", "POST"],
-    credentials: true,
   },
 });
 
@@ -76,9 +51,6 @@ io.on("connection", (socket) => {
   });
 });
 
-/* =========================
-   START SERVER
-========================= */
 server.listen(PORT, () => {
-  console.log(`✅ Server running on port ${PORT}`);
+  console.log(`✅ Server running at http://localhost:${PORT}`);
 });
