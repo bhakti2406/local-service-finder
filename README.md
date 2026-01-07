@@ -6,9 +6,13 @@ The project is built with React and bootstrapped using Create React App.
 
 ✨ Features
 🔍 Search services by category
+
 📍 Location-based service discovery
+
 💬 Real-time chatbot using WebSockets (Socket-based communication)
+
 ⚡ Fast and responsive UI
+
 📱 Works across all screen sizes
 
 
