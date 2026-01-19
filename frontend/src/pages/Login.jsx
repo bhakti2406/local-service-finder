@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import "../styles/Login.css";
 
-const API_URL = "http://localhost:5000/api/auth/login";
+const API_URL = import.meta.env.VITE_API_URL + "/auth/login";
 
 function Login() {
   const { login } = useContext(AuthContext);
@@ -87,3 +87,4 @@ function Login() {
 }
 
 export default Login;
+
