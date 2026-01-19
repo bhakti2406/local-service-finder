@@ -28,7 +28,7 @@ function Admin() {
   useEffect(() => {
     if (!admin?._id) return;
 
-    socketRef.current = io("http://localhost:5000");
+    socketRef.current = io(import.meta.env.VITE_API_BASE);
     socketRef.current.emit("join", admin._id);
 
     return () => {
@@ -336,3 +336,4 @@ const sendBtn = { background: "#f97316", border: "none", color: "white", padding
 const logoutBtn = { background: "#dc2626", border: "none", color: "white", padding: "6px 12px", borderRadius: 8, cursor: "pointer" };
 const grid = { display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(300px,1fr))", gap: 20 };
 export default Admin;
+
