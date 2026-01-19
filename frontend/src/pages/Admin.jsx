@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { io } from "socket.io-client";
@@ -68,11 +68,20 @@ function Admin() {
     }
   }, [messages]);
 
-  useEffect(() => {
-    if (selectedUserId) {
-      fetchChats();
+   const fetchChats = useCallback(async () => {
+    if (!selectedUserId) return;
+    try {
+      const { data } = await api.get(`/chats?userId=${selectedUserId}`);
+      setMessages(data);
+    } catch {
+      setMessages([]);
     }
-  }, [selectedUserId, tab]);
+  }, [selectedUserId]);
+
+  
+  useEffect(() => {
+    fetchChats();
+  }, [fetchChats, tab]);
 
   async function fetchUsers() {
     try {
@@ -98,16 +107,6 @@ function Admin() {
       setReviews(data);
     } catch {
       setReviews([]);
-    }
-  }
-
-  async function fetchChats() {
-    if (!selectedUserId) return;
-    try {
-      const { data } = await api.get(`/chats?userId=${selectedUserId}`);
-      setMessages(data);
-    } catch {
-      setMessages([]);
     }
   }
 
@@ -337,5 +336,6 @@ const sendBtn = { background: "#f97316", border: "none", color: "white", padding
 const logoutBtn = { background: "#dc2626", border: "none", color: "white", padding: "6px 12px", borderRadius: 8, cursor: "pointer" };
 const grid = { display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(300px,1fr))", gap: 20 };
 export default Admin;
+
 
 
