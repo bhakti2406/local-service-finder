@@ -147,6 +147,7 @@ function Admin() {
   };
 
   function logout() {
+    socketRef.current?.disconnect();
     localStorage.removeItem("user");
     navigate("/");
   }
@@ -336,4 +337,5 @@ const sendBtn = { background: "#f97316", border: "none", color: "white", padding
 const logoutBtn = { background: "#dc2626", border: "none", color: "white", padding: "6px 12px", borderRadius: 8, cursor: "pointer" };
 const grid = { display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(300px,1fr))", gap: 20 };
 export default Admin;
+
 
