@@ -34,7 +34,7 @@ function Receiver() {
   useEffect(() => {
     if (!user?._id) return;
 
-    socketRef.current = io("http://localhost:5000");
+    socketRef.current = io(import.meta.env.VITE_API_BASE);
     socketRef.current.emit("join", user._id);
 
     return () => {
@@ -400,3 +400,4 @@ const starContainer = { display: "flex", gap: 5, marginBottom: 15, justifyConten
 const starStyle = { fontSize: 30, cursor: "pointer" };
 
 export default Receiver;
+
