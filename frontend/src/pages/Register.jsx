@@ -3,7 +3,7 @@ import { useState } from "react";
 import "../styles/Register.css";
 
 const ADMIN_KEY = "ADMIN123";
-const API_URL = "http://localhost:5000/api/auth/register";
+const API_URL = import.meta.env.VITE_API_URL + "/auth/register";
 
 function Register() {
   const navigate = useNavigate();
@@ -121,3 +121,4 @@ function Register() {
 }
 
 export default Register;
+
