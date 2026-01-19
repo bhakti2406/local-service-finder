@@ -1,33 +1,15 @@
 import express from "express";
 import Booking from "../models/Booking.js";
-import jwt from "jsonwebtoken";
+import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
-
-const protect = (req, res, next) => {
-  try {
-    const authHeader = req.headers.authorization;
-
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res.status(401).json({ message: "Not authorized, no token" });
-    }
-
-    const token = authHeader.split(" ")[1];
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    req.user = decoded;
-    next();
-  } catch (err) {
-    return res.status(401).json({ message: "Invalid token" });
-  }
-};
 
 router.post("/", protect, async (req, res) => {
   try {
     const { serviceName, problem, price } = req.body;
 
     const booking = await Booking.create({
-      user: req.user.id,
+      user: req.user._id,
       serviceName,
       problem,
       price,
@@ -41,7 +23,7 @@ router.post("/", protect, async (req, res) => {
 
 router.get("/my", protect, async (req, res) => {
   try {
-    const bookings = await Booking.find({ user: req.user.id });
+    const bookings = await Booking.find({ user: req.user._id });
     res.json(bookings);
   } catch {
     res.status(500).json([]);
